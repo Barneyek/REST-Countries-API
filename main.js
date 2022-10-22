@@ -1,23 +1,24 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import { setupCounter } from './counter.js'
+import './style.css';
+import { renderDashboard } from "./view-dashboard.js";
+import { renderDetail } from "./view-detail.js";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+if (window.location.search.includes("?country=")) {
+  renderDetail();
+} else {
+  document.querySelector(".filters").classList.add("active");
+  renderDashboard();
+}
 
-setupCounter(document.querySelector('#counter'))
+if (window.localStorage.getItem("preferDark")) {
+  document.body.classList.toggle('dark-mode');
+}
+
+let switchColorTheme = document.querySelector(".theme-switcher");
+switchColorTheme.addEventListener("click", () => {
+  if (window.localStorage.getItem("preferDark")) {
+    window.localStorage.setItem("preferDark", 0);
+  } else {
+    window.localStorage.setItem("preferDark", 1);
+  }
+  document.body.classList.toggle('dark-mode');
+});
